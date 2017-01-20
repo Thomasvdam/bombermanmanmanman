@@ -28,9 +28,7 @@ public class Controller : MonoBehaviour {
 
 		Debug.Log("joystick" + id + "Xaxis: " + x + " Y axis: " + y);
 
-		if (x == 0 && y == 0) {
-			return;
-		}
+		gameObject.GetComponent<Player>().Move (x, y);
 	}
 
 	private void checkFireButton() {

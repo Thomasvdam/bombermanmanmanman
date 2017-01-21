@@ -5,9 +5,9 @@ using System;
 
 public class StartAreaScript : MonoBehaviour {
 
-	public const int AMOUNT_PLAYERS_IN_AREA_NEEDED = 1;
 	public float countdownTime = 4f;
 	private int mPlayersInArea = 0;
+	private int mTotalPlayers = 2;
 
 	public event EventHandler startTimerHandler;
 	public event EventHandler abortTimerHandler;
@@ -26,6 +26,12 @@ public class StartAreaScript : MonoBehaviour {
 		}
 	}
 
+	void Update() {
+		GameObject[] players = GameObject.FindGameObjectsWithTag (Constants.TAG_PLAYER);
+		mTotalPlayers = players.Length;
+		checkStartOrAbortTimer ();
+	}
+
 	public void handleTimerEndedEvent(object sender, System.EventArgs args) {
 		gameObject.SetActive (false);
 		//gamemanager.startgame
@@ -34,18 +40,22 @@ public class StartAreaScript : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D co) {
 		if (co.tag.Equals (Constants.TAG_PLAYER)) {
 			mPlayersInArea++;
-			if (mPlayersInArea == AMOUNT_PLAYERS_IN_AREA_NEEDED) {
-				onStartTimerEvent ();
-			}
+			checkStartOrAbortTimer ();
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D co) {
 		if (co.tag.Equals (Constants.TAG_PLAYER)) {
 			mPlayersInArea--;
-			if (mPlayersInArea < AMOUNT_PLAYERS_IN_AREA_NEEDED) {
-				onAbortTimerEvent ();
-			}
+			checkStartOrAbortTimer ();
+		}
+	}
+
+	private void checkStartOrAbortTimer() {
+		if (mPlayersInArea == mTotalPlayers) {
+			onStartTimerEvent ();
+		} else {
+			onAbortTimerEvent ();
 		}
 	}
 }

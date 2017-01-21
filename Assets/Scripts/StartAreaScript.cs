@@ -7,7 +7,7 @@ public class StartAreaScript : MonoBehaviour {
 
 	public float countdownTime = 4f;
 	private int mPlayersInArea = 0;
-	private int mTotalPlayers = 2;
+	private int mTotalPlayers = 10;
 
 	public event EventHandler startTimerHandler;
 	public event EventHandler abortTimerHandler;
@@ -33,8 +33,8 @@ public class StartAreaScript : MonoBehaviour {
 	}
 
 	public void handleTimerEndedEvent(object sender, System.EventArgs args) {
+		Constants.isStartedGame = true;
 		gameObject.SetActive (false);
-		//gamemanager.startgame
 	}
 
 	void OnTriggerEnter2D(Collider2D co) {

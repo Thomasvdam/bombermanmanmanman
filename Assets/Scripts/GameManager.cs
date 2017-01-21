@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
 	private static GameManager mManager = null;
+	private AudioManager audioManager;
 
 	public float waitUntilFinish;
 
 	private PauseManager pauseManager;
+
+	public int numberOfPlayers = 4;
+	public int numberOfLives = 5;
+	private List<int> lives = new List<int>();
 
 	public GameObject playerPrefab1;
 	public GameObject playerPrefab2;
@@ -22,6 +28,13 @@ public class GameManager : MonoBehaviour {
 	public GameObject spawnLocation4;
 
 	public void onPlayerDeathEvent(object sender, int id) {
+		if (Constants.isStartedGame) {
+			lives [id - 1]--;
+			if (lives [id - 1] < 0) {
+				return;
+			}		
+		}
+
 		SpawnPlayer (id);
 	}
 
@@ -48,10 +61,10 @@ public class GameManager : MonoBehaviour {
 		// Begin Timer for Finish
 		StartCoroutine(Finish(waitUntilFinish));
 
-		SpawnPlayer (1);
-		SpawnPlayer (2);
-		SpawnPlayer (3);
-		SpawnPlayer (4);
+		for (int i = 0; i < numberOfPlayers; i++) {
+			SpawnPlayer (i + 1);
+			lives.Add (numberOfLives);
+		}
 	}
 
 	void SpawnPlayer(int id) {
@@ -83,6 +96,14 @@ public class GameManager : MonoBehaviour {
 
 		GameObject playerObject = Instantiate (prefab, location.transform.position, location.transform.rotation);
 		playerObject.GetComponent<Player> ().onPlayerDeath += this.onPlayerDeathEvent;
+		audioManager = GetComponent<AudioManager> ();
+		Player player = playerObject.GetComponent<Player> ();
+		player.onFootStepHandler += audioManager.handleOnFootStepEvent;
+		player.onPlonsHandler += audioManager.handleOnPlonsEvent;
+		PlayerActions playerActions = playerObject.GetComponent<PlayerActions> ();
+		playerActions.onArmBombHandler += audioManager.handleOnArmBombEvent;
+		playerActions.onThrowBombHandler += audioManager.handleOnThrowBombEvent;
+
 	}
 
 }

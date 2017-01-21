@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
 	public int numberOfPlayers = 4;
 	public int numberOfLives = 5;
 	private List<int> lives = new List<int>();
+	public List<UnityEngine.UI.Text> liveTexts;
 
 	public GameObject playerPrefab1;
 	public GameObject playerPrefab2;
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour {
 	public void onPlayerDeathEvent(object sender, int id) {
 		if (Constants.isStartedGame) {
 			lives [id - 1]--;
+			liveTexts [id - 1].text = lives [id - 1].ToString();
 			if (lives [id - 1] < 0) {
 				return;
 			}		
@@ -48,7 +50,10 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		pauseManager = this.GetComponent<PauseManager>();
-
+		audioManager = GetComponent<AudioManager> ();
+		foreach (UnityEngine.UI.Text textfield in liveTexts) {
+			textfield.text = numberOfLives.ToString();
+		}
 		StartGame ();
 	}
 
@@ -95,15 +100,13 @@ public class GameManager : MonoBehaviour {
 		}
 
 		GameObject playerObject = Instantiate (prefab, location.transform.position, location.transform.rotation);
-		playerObject.GetComponent<Player> ().onPlayerDeath += this.onPlayerDeathEvent;
-		audioManager = GetComponent<AudioManager> ();
 		Player player = playerObject.GetComponent<Player> ();
+		player.onPlayerDeath += this.onPlayerDeathEvent;
 		player.onFootStepHandler += audioManager.handleOnFootStepEvent;
 		player.onPlonsHandler += audioManager.handleOnPlonsEvent;
 		PlayerActions playerActions = playerObject.GetComponent<PlayerActions> ();
 		playerActions.onArmBombHandler += audioManager.handleOnArmBombEvent;
 		playerActions.onThrowBombHandler += audioManager.handleOnThrowBombEvent;
-
 	}
 
 }

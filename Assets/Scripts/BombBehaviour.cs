@@ -9,7 +9,7 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 	public float waitTillExplode = 3;
 	public float fallingSpeed = 1;
 	public float fallingDuration = 2;
-    public float thrownScaleFactor = 3;
+    public float projectileScaleFactor = 3;
 
 	private bool isFalling = false;
 	private bool isThrown = false;
@@ -37,11 +37,7 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 	}
 
     void FixedUpdate () {
-        if (!isFalling && isThrown) {
-            ratioThrownTime = (Time.time - thrownTime) / travelTime; 
-            scale = -(Mathf.Pow(ratioThrownTime * 2.0f, 2.0f)) + 2 * (ratioThrownTime * 2.0f);
-            transform.localScale = new Vector3(initialScale.x + scale * thrownScaleFactor, initialScale.y + scale * thrownScaleFactor, initialScale.z + scale * thrownScaleFactor);
-        }
+        ScaleProjectile();
     }
 
 	IEnumerator Explode (float waitTillExplode){
@@ -52,6 +48,14 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 			Destroy (this.gameObject);	
 		}
 	}
+
+    public void ScaleProjectile () {
+        if (!isFalling && isThrown) {
+            ratioThrownTime = (Time.time - thrownTime) / travelTime;
+            scale = -(Mathf.Pow(ratioThrownTime * 2.0f, 2.0f)) + 2 * (ratioThrownTime * 2.0f);
+            transform.localScale = new Vector3(initialScale.x + scale * projectileScaleFactor, initialScale.y + scale * projectileScaleFactor, initialScale.z + scale * projectileScaleFactor);
+        }
+    }
 
     public void Armed () {
         armedTime = Time.time;

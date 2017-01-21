@@ -10,7 +10,7 @@ public class ShockWave : MonoBehaviour {
 	public float blastScale;
 	public float blastCap;
 
-	float minRadius = 0.001f;
+	float minRadius = 0.01f;
 	float currentTime;
 
 	Transform radius;
@@ -19,11 +19,13 @@ public class ShockWave : MonoBehaviour {
 		radius = this.transform;
 		radius.localScale = new Vector2(1, 1) * minRadius;
 		currentTime = Time.time;
+
+		GetComponent<SpriteRenderer>().color = new Color (0f, 1f, 0f, 0.5f);
 	}
 
 	void Update () {
 		//the lerp time factor
-		float t = 1 + Mathf.Log (Time.time - currentTime);
+		float t = Mathf.Log (1 + Time.time - currentTime);
 		//increase the radius of the collider
 		radius.localScale = new Vector2(1, 1) * Mathf.Lerp (minRadius, maxRadius, t * explosionFactor);
 		//if we reach max radius destroy the gameobject

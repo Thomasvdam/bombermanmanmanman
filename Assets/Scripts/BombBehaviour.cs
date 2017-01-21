@@ -19,7 +19,7 @@ public class BombBehaviour : MonoBehaviour {
 			return;
 		}
 
-		transform.position = transform.parent.position;
+		transform.position = transform.parent.position + transform.parent.up * 1f; 
 	}
 
 	IEnumerator Explode (float waitTillExplode){

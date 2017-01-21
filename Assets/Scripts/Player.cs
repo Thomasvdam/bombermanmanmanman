@@ -23,6 +23,8 @@ public class Player : MonoBehaviour {
 	public void Move(float horizontal, float vertical) {
 		Vector2 direction = new Vector2 (horizontal, vertical);
 
+		transform.up = direction;
+
 		rBody.AddForce (direction * speed);
 	}
 

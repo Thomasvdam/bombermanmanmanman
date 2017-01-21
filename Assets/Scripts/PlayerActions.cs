@@ -16,7 +16,7 @@ public class PlayerActions : MonoBehaviour {
 			return;
 		}
 
-		newBomb = Instantiate (projectile, transform.position, transform.rotation) as GameObject;
+		newBomb = Instantiate (projectile, gameObject.transform.up * 1f, gameObject.transform.rotation) as GameObject;
 		newBomb.transform.SetParent (gameObject.transform);
 
 		this.cooldownTimeStamp = Time.time + fireCooldown;
@@ -27,8 +27,16 @@ public class PlayerActions : MonoBehaviour {
 			return;
 		}
 
+		if (direction.magnitude > 0.9f) {
+			//throw far
+			throwingStrength = 650f;
+		} else {
+			//throw close
+			throwingStrength = 300f;
+		}
+
 		newBomb.transform.SetParent (null);
-		newBomb.GetComponent<Rigidbody2D> ().AddForce (direction * throwingStrength);
+		newBomb.GetComponent<Rigidbody2D> ().AddForce (direction.normalized * throwingStrength);
 		newBomb = null;
 	}
 }

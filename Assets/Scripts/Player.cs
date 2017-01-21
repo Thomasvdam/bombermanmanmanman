@@ -39,7 +39,7 @@ public class Player : MonoBehaviour, IFallable {
 	}
 
 	public void onPlonsEvent() {
-		System.EventHandler handler = onFootStepHandler;
+		System.EventHandler handler = onPlonsHandler;
 		if (handler != null) {
 			handler(this, System.EventArgs.Empty);
 		}

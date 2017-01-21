@@ -32,7 +32,6 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 		//Instantiate shockwave when time is over
 		if (gameObject) {
 			Instantiate (shockwave, transform.position, Quaternion.identity);
-			Debug.Log ("STEVEN");
 			Destroy (this.gameObject);	
 		}
 	}

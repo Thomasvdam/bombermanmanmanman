@@ -6,10 +6,11 @@ public class PlayerActions : MonoBehaviour {
 	public GameObject projectile;
 
 	public float fireCooldown = 1f;
-	public float throwingStrength = 300f;
+	private float throwingStrength = 1200f;
 
 	private float cooldownTimeStamp;
 	private GameObject newBomb;
+	private Vector2 oldBombAim = new Vector2 (0, 0);
 
 	public void ArmBomb() {
 		if (cooldownTimeStamp >= Time.time) {
@@ -26,17 +27,9 @@ public class PlayerActions : MonoBehaviour {
 		if (!newBomb) {
 			return;
 		}
-
-		if (direction.magnitude > 0.9f) {
-			//throw far
-			throwingStrength = 650f;
-		} else {
-			//throw close
-			throwingStrength = 300f;
-		}
-
+			
 		newBomb.transform.SetParent (null);
-		newBomb.GetComponent<Rigidbody2D> ().AddForce (direction.normalized * throwingStrength);
+		newBomb.GetComponent<Rigidbody2D> ().AddForce (direction * throwingStrength);
 		newBomb = null;
 	}
 
@@ -46,9 +39,14 @@ public class PlayerActions : MonoBehaviour {
 		}
 
 		if (dir.magnitude <= 0) {
-			dir = new Vector2 (0, 1);
+			if (oldBombAim.magnitude > 0) {
+				dir = oldBombAim;
+			} else {
+				dir = new Vector2 (0, 1);
+			}
 		}
 			
 		newBomb.transform.position = (Vector2)transform.position + dir * 1f;
+		oldBombAim = dir;
 	}
 }

@@ -16,7 +16,6 @@ public class ShockWave : MonoBehaviour {
 	Transform radius;
 
 	void Start () {
-		Debug.Log ("PROBERT");
 		radius = this.transform;
 		radius.localScale = new Vector2(1, 1) * minRadius;
 		currentTime = Time.time;
@@ -26,7 +25,7 @@ public class ShockWave : MonoBehaviour {
 
 	void Update () {
 		//the lerp time factor
-		float t = Mathf.Log (1 + Time.time - currentTime);
+		float t = Time.time - currentTime;
 		//increase the radius of the collider
 		radius.localScale = new Vector2(1, 1) * Mathf.Lerp (minRadius, maxRadius, t * explosionFactor);
 		//if we reach max radius destroy the gameobject
@@ -38,7 +37,7 @@ public class ShockWave : MonoBehaviour {
 		if (other.tag == "Player") {
 			Vector2 dir = (other.transform.position - transform.position).normalized;
 
-			float blastPower = Mathf.Clamp(-Mathf.Log (Mathf.Pow (radius.localScale.x, blastScale) / maxRadius), 0, blastCap);
+			float blastPower = Mathf.Clamp(maxRadius / radius.localScale.x, 0, blastCap);
 
 			//get player rigidbody and add force inverse to the distance from the center
 			other.GetComponent<Rigidbody2D>().AddForce (blastPowerFactor * dir * blastPower);

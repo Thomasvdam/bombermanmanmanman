@@ -9,6 +9,11 @@ public class Controller : MonoBehaviour {
 	private float x;
 	private float y;
 
+	private float aimX;
+	private float aimY;
+
+	private bool armed = false;
+
 	void Start () {
 		player = gameObject.GetComponent<Player> ();
 	}
@@ -21,17 +26,23 @@ public class Controller : MonoBehaviour {
 	}
 
 	private void checkAxes() {
-		x = XCI.GetAxis(XboxAxis.LeftStickX, playerNumber);
-		y = XCI.GetAxis(XboxAxis.LeftStickY, playerNumber);
+		y = XCI.GetAxisRaw(XboxAxis.LeftStickY, playerNumber);
+		x = XCI.GetAxisRaw(XboxAxis.LeftStickX, playerNumber);
+
+		aimX = XCI.GetAxisRaw (XboxAxis.RightStickX, playerNumber);
+		aimY = XCI.GetAxisRaw (XboxAxis.RightStickY, playerNumber);
 
 		player.Move (x, y);
+		player.Aim (aimX, aimY);
 	}
 
 	private void checkFireButton() {
-		if (XCI.GetButtonDown(XboxButton.A, playerNumber)) {
+		if (XCI.GetAxis(XboxAxis.RightTrigger, playerNumber) >= 0.8 && !armed) {
 			player.ArmBomb ();
-		} else if (XCI.GetButtonUp(XboxButton.A, playerNumber)) {
-			player.ThrowBomb (x, y);
+			armed = true;
+		} else if (XCI.GetAxis(XboxAxis.RightTrigger, playerNumber) < 0.8 && armed) {
+			player.ThrowBomb (aimX, aimY);
+			armed = false;
 		}
 	}
 

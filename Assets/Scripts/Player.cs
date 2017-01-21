@@ -10,6 +10,13 @@ public class Player : MonoBehaviour, IFallable {
 	public float fallingSpeed = 1;
 	public float fallingDuration = 2;
 
+	public float gracePeriodDuration = 2;
+	private float graceFlashes = 4;
+	private bool gracePeriodActive = true;
+	private SpriteRenderer myRenderer;
+	private Color prevColor;
+	public Color flashColor = new Color (1, 1, 1, 0.5f);
+
 	public GameObject footstepPrefab;
 	private bool isLeftFootstep;
 
@@ -29,6 +36,11 @@ public class Player : MonoBehaviour, IFallable {
 		InvokeRepeating ("showFootStep", 0f, 0.2f);
 
 		playerActions = GetComponent<PlayerActions> ();
+		myRenderer = GetComponent<SpriteRenderer> ();
+		prevColor = myRenderer.color;
+
+		myRenderer.color = flashColor;
+		StartCoroutine(EndGracePeriod(gracePeriodDuration));
 	}
 	
 	// Update is called once per frame
@@ -96,5 +108,21 @@ public class Player : MonoBehaviour, IFallable {
 		if (onPlayerDeath != null) {
 			onPlayerDeath (gameObject, playerId);
 		}
+	}
+
+	public bool IsGracePeriodActive() {
+		return gracePeriodActive;
+	}
+
+	IEnumerator EndGracePeriod(float timer) {
+		for (int i = 0; i < graceFlashes; i++) {
+			yield return new WaitForSeconds ((timer / graceFlashes) / 2);
+			myRenderer.color = prevColor;
+			yield return new WaitForSeconds ((timer / graceFlashes) / 2);
+			myRenderer.color = flashColor;
+		}
+
+		myRenderer.color = prevColor;
+		gracePeriodActive = false;
 	}
 }

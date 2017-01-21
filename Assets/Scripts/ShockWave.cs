@@ -34,7 +34,7 @@ public class ShockWave : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D other) {
 		//if the shockwave blast hits the player
-		if (other.tag == "Player") {
+		if (other.tag == "Player" && !other.GetComponent<Player> ().IsGracePeriodActive()) {
 			Vector2 dir = (other.transform.position - transform.position).normalized;
 
 			float blastPower = Mathf.Clamp(maxRadius / radius.localScale.x, 0, blastCap);

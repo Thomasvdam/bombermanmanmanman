@@ -4,32 +4,36 @@ using UnityEngine;
 
 public class ShockWave : MonoBehaviour {
 
-	public float maxRadius = 40;
+	public float maxRadius = 3;
 	public float explosionFactor = 2;
 	public float blastPowerFactor = 350;
 	public float blastScale = 1;
 	public float blastCap = 4;
 
+	public Sprite[] explosion;
+	public float animationDuration = 0.1f;
+	private SpriteRenderer myRenderer;
+
 	float minRadius = 0.01f;
 	float currentTime;
 
-	Transform radius;
+	CircleCollider2D circleCollider;
 
 	void Start () {
-		radius = this.transform;
-		radius.localScale = new Vector2(1, 1) * minRadius;
+		circleCollider = GetComponent<CircleCollider2D> ();
+		circleCollider.radius = minRadius;
+		myRenderer = GetComponent<SpriteRenderer> ();
 		currentTime = Time.time;
-
-		GetComponent<SpriteRenderer>().color = new Color (0f, 1f, 0f, 0.5f);
+		StartCoroutine(StartAnimation(animationDuration));
 	}
 
 	void Update () {
 		//the lerp time factor
 		float t = Time.time - currentTime;
 		//increase the radius of the collider
-		radius.localScale = new Vector2(1, 1) * Mathf.Lerp (minRadius, maxRadius, t * explosionFactor);
+		circleCollider.radius = Mathf.Lerp (minRadius, maxRadius, t * explosionFactor);
 		//if we reach max radius destroy the gameobject
-		if (radius.localScale.x >= maxRadius) Destroy(this.gameObject);
+		if (circleCollider.radius >= maxRadius) Destroy(this.gameObject);
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
@@ -37,11 +41,21 @@ public class ShockWave : MonoBehaviour {
 		if (other.tag == "Player" && !other.GetComponent<Player> ().IsGracePeriodActive()) {
 			Vector2 dir = (other.transform.position - transform.position).normalized;
 
-			float blastPower = Mathf.Clamp(maxRadius / radius.localScale.x, 0, blastCap);
+			float blastPower = Mathf.Clamp(maxRadius / circleCollider.radius, 0, blastCap);
 
 			//get player rigidbody and add force inverse to the distance from the center
 			other.GetComponent<Rigidbody2D>().AddForce (blastPowerFactor * dir * blastPower);
 
 		}
+	}
+
+	IEnumerator StartAnimation(float timer) {
+		yield return new WaitForSeconds (0.1f);
+		foreach (Sprite x in explosion) {
+			myRenderer.sprite = x;
+			yield return new WaitForSeconds ((timer / explosion.Length));
+		}
+
+		myRenderer.sprite = null;
 	}
 }

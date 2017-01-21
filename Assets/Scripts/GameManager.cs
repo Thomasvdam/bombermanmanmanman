@@ -27,9 +27,11 @@ public class GameManager : MonoBehaviour {
 	public GameObject spawnLocation4;
 
 	public void onPlayerDeathEvent(object sender, int id) {
-		lives [id - 1]--;
-		if (lives [id - 1] < 0) {
-			return;
+		if (Constants.isStartedGame) {
+			lives [id - 1]--;
+			if (lives [id - 1] < 0) {
+				return;
+			}		
 		}
 
 		SpawnPlayer (id);

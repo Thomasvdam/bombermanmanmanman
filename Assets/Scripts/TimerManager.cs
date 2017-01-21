@@ -53,7 +53,6 @@ public class TimerManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		Debug.Log ("update timer: " + startTimer);
 		if (startTimer) {
 			checkForSecondSound();
 			timerText.gameObject.SetActive(true);

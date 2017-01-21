@@ -29,13 +29,12 @@ public class StartAreaScript : MonoBehaviour {
 	void Update() {
 		GameObject[] players = GameObject.FindGameObjectsWithTag (Constants.TAG_PLAYER);
 		mTotalPlayers = players.Length;
-		Debug.Log ("update start area: " + mPlayersInArea + " = " + mTotalPlayers);
 		checkStartOrAbortTimer ();
 	}
 
 	public void handleTimerEndedEvent(object sender, System.EventArgs args) {
+		Constants.isStartedGame = true;
 		gameObject.SetActive (false);
-		//gamemanager.startgame
 	}
 
 	void OnTriggerEnter2D(Collider2D co) {

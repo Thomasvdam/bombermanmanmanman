@@ -87,11 +87,15 @@ public class Player : MonoBehaviour, IFallable {
 	}
 
 	public void ArmBomb() {
-		actions.ArmBomb ();
+		if (Constants.isStartedGame) {
+			actions.ArmBomb ();
+		}
 	}
 
 	public void ThrowBomb(float x, float y) {
-		actions.ThrowBomb (new Vector2(x, y));
+		if (Constants.isStartedGame) {
+			actions.ThrowBomb (new Vector2 (x, y));
+		}
 	}
 
 	public void Fall () {

@@ -25,10 +25,6 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 		if (isFalling) {
 			transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(0.1f, 0.1f, 0.1f), Time.deltaTime * fallingSpeed);
 		}
-	
-		if (transform.parent) {
-			transform.position = transform.parent.position + transform.parent.up * 1f;
-		}
 	}
 
 	IEnumerator Explode (float waitTillExplode){

@@ -39,4 +39,12 @@ public class PlayerActions : MonoBehaviour {
 		newBomb.GetComponent<Rigidbody2D> ().AddForce (direction.normalized * throwingStrength);
 		newBomb = null;
 	}
+
+	public void setBombAim(Vector2 dir) {
+		if (!newBomb) {
+			return;
+		}
+
+		newBomb.transform.position = (Vector2)transform.position + dir * 1f;
+	}
 }

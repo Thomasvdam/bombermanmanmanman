@@ -40,10 +40,11 @@ public class Player : MonoBehaviour, IFallable {
 		}
 
 		Vector2 direction = new Vector2 (horizontal, vertical);
+		GetComponent<PlayerActions> ().setBombAim (direction.normalized);
 
-		if (direction.magnitude > 0) {
-			transform.up = direction;
-		}
+		//if (direction.magnitude > 0) {
+			//transform.up = direction;
+		//}
 
 		rBody.AddForce (direction * speed);
 	}

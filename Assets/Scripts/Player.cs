@@ -7,7 +7,7 @@ using XInputDotNetPure; // Required in C#
 public class Player : MonoBehaviour, IFallable {
 
 	public int playerId = 1;
-	private float speed = 3;
+	private float speed = 2.5f;
 	public float fallingSpeed = 1;
 	public float fallingDuration = 2;
 
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour, IFallable {
 	}
 
 	void FixedUpdate() {
-		rBody.velocity *= 0.965f;
+		rBody.velocity *= 0.945f;
 	}
 
 	public void Move(float horizontal, float vertical) {

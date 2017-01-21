@@ -4,17 +4,18 @@ using System;
 
 public class TimerManager : MonoBehaviour {
 
-	public UnityEngine.UI.Text timerText;
-	private float time;
-	private bool startTimer = false;
-	private bool secondSoundActivated = false;
-	private StartAreaScript mStartAreaScript;
+	public UnityEngine.UI.Text timerText; //Displays the text in our UI
+	private float time; //we use this variable to keep track of the time during update steps
+	private bool startTimer = false; //starts/ stops the timer and allows/ blocks countdown
+	private bool secondSoundActivated = false; //whether we have started playing the sound for seconds counting down
 
-	public event EventHandler onSecondSound;
-	public event EventHandler onTimerEndedSound;
+	public event EventHandler onSecondSound; //handles that we want to play the sound for a second counting down
+	public event EventHandler onTimerEndedSound; //handles that we want to play the sound for the timer ending
 
-	private TimerArgs mArgs;
-	
+	//containing event variables (the amount of seconds we want to count down from, 
+	//the object we want to notify once we've stopped counting down)
+	private TimerArgs mArgs; 
+
 	public void onSecondSoundEvent() {
 		EventHandler handler = onSecondSound;
 		if (handler != null) {
@@ -32,9 +33,9 @@ public class TimerManager : MonoBehaviour {
 	void Start() {
 		//subscribe to Start- and Abort- Timer events
 		GameObject startArea = GameObject.Find (Constants.NAME_START_AREA);
-		mStartAreaScript = startArea.GetComponent<StartAreaScript> ();
-		mStartAreaScript.startTimerHandler += this.handleStartTimerEvent;
-		mStartAreaScript.abortTimerHandler += this.handleAbortTimerEvent;
+		StartAreaScript startAreaScript = startArea.GetComponent<StartAreaScript> ();
+		startAreaScript.startTimerHandler += this.handleStartTimerEvent;
+		startAreaScript.abortTimerHandler += this.handleAbortTimerEvent;
 	}
 
 	public void handleStartTimerEvent(object sender, System.EventArgs args) {
@@ -45,6 +46,7 @@ public class TimerManager : MonoBehaviour {
 
 	public void handleAbortTimerEvent(object sender, System.EventArgs args) {
 		startTimer = false;
+		reset ();
 	}
 
 	// Update is called once per frame
@@ -61,16 +63,13 @@ public class TimerManager : MonoBehaviour {
 
 	// Checks if we should play the sound for a second. Repeats this sound every second.
 	private void checkForSecondSound() {
-		if (!secondSoundActivated && time > 10f && !secondSoundActivated) {
+		if (!secondSoundActivated && time < 10f) { //TODO do we still want 10 as a limit?
 			secondSoundActivated = true;
-			InvokeRepeating("playSecondSound", 1f, 1f);
+			InvokeRepeating("onSecondSoundEvent", 1f, 1f);
 		}
 	}
 
-	private void playSecondSound() {
-		onSecondSoundEvent ();
-	}
-
+	//Checks if the time has elapsed. TRUE: resets variables, plays timer ending sound and notifies subscribers that the timer has ended
 	private void checkTimePassed() {
 		if (time < 1) {
 			reset();

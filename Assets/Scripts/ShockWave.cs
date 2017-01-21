@@ -16,7 +16,6 @@ public class ShockWave : MonoBehaviour {
 	Transform radius;
 
 	void Start () {
-		Debug.Log ("PROBERT");
 		radius = this.transform;
 		radius.localScale = new Vector2(1, 1) * minRadius;
 		currentTime = Time.time;
@@ -35,7 +34,7 @@ public class ShockWave : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D other) {
 		//if the shockwave blast hits the player
-		if (other.tag == "Player") {
+		if (other.tag == "Player" && !other.GetComponent<Player> ().IsGracePeriodActive()) {
 			Vector2 dir = (other.transform.position - transform.position).normalized;
 
 			float blastPower = Mathf.Clamp(-Mathf.Log (Mathf.Pow (radius.localScale.x, blastScale) / maxRadius), 0, blastCap);

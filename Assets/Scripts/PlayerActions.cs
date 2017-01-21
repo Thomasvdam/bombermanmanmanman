@@ -45,6 +45,8 @@ public class PlayerActions : MonoBehaviour {
 			return;
 		}
 
-		newBomb.transform.position = (Vector2)transform.position + dir * 1f;
+		if (dir.magnitude > 0) {
+			newBomb.transform.position = (Vector2)transform.position + dir * 1f;
+		}
 	}
 }

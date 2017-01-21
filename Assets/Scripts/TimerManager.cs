@@ -39,9 +39,11 @@ public class TimerManager : MonoBehaviour {
 	}
 
 	public void handleStartTimerEvent(object sender, System.EventArgs args) {
-		mArgs = (TimerArgs) args;
-		startTimer = true;
-		time = mArgs.countdownTime;
+		if (startTimer == false) {
+			mArgs = (TimerArgs) args;
+			startTimer = true;
+			time = mArgs.countdownTime;
+		}
 	}
 
 	public void handleAbortTimerEvent(object sender, System.EventArgs args) {
@@ -51,6 +53,7 @@ public class TimerManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		Debug.Log ("update timer: " + startTimer);
 		if (startTimer) {
 			checkForSecondSound();
 			timerText.gameObject.SetActive(true);

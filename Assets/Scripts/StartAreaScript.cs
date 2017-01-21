@@ -7,7 +7,7 @@ public class StartAreaScript : MonoBehaviour {
 
 	public float countdownTime = 4f;
 	private int mPlayersInArea = 0;
-	private int mTotalPlayers = 2;
+	private int mTotalPlayers = 10;
 
 	public event EventHandler startTimerHandler;
 	public event EventHandler abortTimerHandler;
@@ -29,6 +29,7 @@ public class StartAreaScript : MonoBehaviour {
 	void Update() {
 		GameObject[] players = GameObject.FindGameObjectsWithTag (Constants.TAG_PLAYER);
 		mTotalPlayers = players.Length;
+		Debug.Log ("update start area: " + mPlayersInArea + " = " + mTotalPlayers);
 		checkStartOrAbortTimer ();
 	}
 

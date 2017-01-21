@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class ShockWave : MonoBehaviour {
 
-	public float finalRadius;
+	public float maxRadius;
 	public float explosionFactor;
 	public float blastPowerFactor;
+	public float blastScale;
+	public float blastCap;
 
 	float minRadius = 0.001f;
 	float currentTime;
 
-	CircleCollider2D circleCollider;
-	Rigidbody2D playerRb;
+	Transform radius;
 
 	void Start () {
-		circleCollider = GetComponent<CircleCollider2D> ();
-		//make the collider really small if it is not already
-		circleCollider.radius = minRadius;
+		radius = this.transform;
+		radius.localScale = new Vector2(1, 1) * minRadius;
 		currentTime = Time.time;
 	}
 
@@ -25,23 +25,21 @@ public class ShockWave : MonoBehaviour {
 		//the lerp time factor
 		float t = 1 + Mathf.Log (Time.time - currentTime);
 		//increase the radius of the collider
-		circleCollider.radius = Mathf.Lerp (minRadius, finalRadius, t * explosionFactor);
+		radius.localScale = new Vector2(1, 1) * Mathf.Lerp (minRadius, maxRadius, t * explosionFactor);
 		//if we reach max radius destroy the gameobject
-		if (circleCollider.radius >= finalRadius) Destroy(this.gameObject);
+		if (radius.localScale.x >= maxRadius) Destroy(this.gameObject);
 	}
 
-	void OnTriggerEnter2D (Collider2D triggerCollider) {
-
+	void OnTriggerEnter2D (Collider2D other) {
 		//if the shockwave blast hits the player
-		if (triggerCollider.tag == "Player") {
+		if (other.tag == "Player") {
+			Vector2 dir = (other.transform.position - transform.position).normalized;
 
-			//get distance and the direction away from the shockwave center 
-			float distanceFromPlayer = (transform.position - triggerCollider.transform.position).magnitude;
-			Vector2 dir = (triggerCollider.transform.position - transform.position).normalized;
+			float blastPower = Mathf.Clamp(-Mathf.Log (Mathf.Pow (radius.localScale.x, blastScale) / maxRadius), 0, blastCap);
 
 			//get player rigidbody and add force inverse to the distance from the center
-			playerRb = triggerCollider.GetComponent<Rigidbody2D>();
-			playerRb.AddForce (blastPowerFactor * dir * 1 / distanceFromPlayer);
+			other.GetComponent<Rigidbody2D>().AddForce (blastPowerFactor * dir * blastPower);
+
 		}
 	}
 }

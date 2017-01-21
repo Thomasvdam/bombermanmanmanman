@@ -6,7 +6,7 @@ public class PlayerActions : MonoBehaviour {
 	public GameObject projectile;
 
 	public float fireCooldown = 1f;
-	public float throwingStrenght = 300f;
+	public float throwingStrength = 300f;
 
 	private float cooldownTimeStamp;
 	private GameObject newBomb;
@@ -28,7 +28,7 @@ public class PlayerActions : MonoBehaviour {
 		}
 
 		newBomb.transform.SetParent (null);
-		newBomb.GetComponent<Rigidbody2D> ().AddForce (direction * throwingStrenght);
+		newBomb.GetComponent<Rigidbody2D> ().AddForce (direction * throwingStrength);
 		newBomb = null;
 	}
 }

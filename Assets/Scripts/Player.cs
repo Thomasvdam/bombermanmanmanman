@@ -23,7 +23,7 @@ public class Player : MonoBehaviour {
 	public void Move(float horizontal, float vertical) {
 		Vector2 direction = new Vector2 (horizontal, vertical);
 
-		rBody.velocity = transform.TransformDirection(direction * speed);
+		rBody.AddForce (direction * speed);
 	}
 
 	public void ArmBomb() {

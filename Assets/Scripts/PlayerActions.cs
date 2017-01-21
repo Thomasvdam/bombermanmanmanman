@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerActions : MonoBehaviour {
 	public GameObject projectile;
@@ -12,6 +13,23 @@ public class PlayerActions : MonoBehaviour {
 	private GameObject newBomb;
 	private Vector2 oldBombAim = new Vector2 (0, 0);
 
+	public event EventHandler onArmBombHandler; //handles that we want to play the sound for activating a bomb
+	public event EventHandler onThrowBombHandler; //handles that we want to play the sound for throwing a bomb
+
+	public void onArmBombSoundEvent() {
+		EventHandler handler = onArmBombHandler;
+		if (handler != null) {
+			handler(this, System.EventArgs.Empty);
+		}
+	}
+
+	public void onThrowBombSound() {
+		EventHandler handler = onThrowBombHandler;
+		if (handler != null) {
+			handler(this, System.EventArgs.Empty);
+		}
+	}
+
 	public void ArmBomb() {
 		if (cooldownTimeStamp >= Time.time) {
 			return;
@@ -19,6 +37,7 @@ public class PlayerActions : MonoBehaviour {
 
 		newBomb = Instantiate (projectile, gameObject.transform.position + gameObject.transform.up * 1f, gameObject.transform.rotation) as GameObject;
 		newBomb.transform.SetParent (gameObject.transform);
+		onArmBombSoundEvent ();
 
 		this.cooldownTimeStamp = Time.time + fireCooldown;
 	}
@@ -30,6 +49,9 @@ public class PlayerActions : MonoBehaviour {
 			
 		newBomb.transform.SetParent (null);
 		newBomb.GetComponent<Rigidbody2D> ().AddForce (direction * throwingStrength);
+		if (direction.x != 0 || direction.y != 0) {
+			onThrowBombSound ();
+		}
 		newBomb = null;
 	}
 

@@ -97,8 +97,13 @@ public class GameManager : MonoBehaviour {
 		GameObject playerObject = Instantiate (prefab, location.transform.position, location.transform.rotation);
 		playerObject.GetComponent<Player> ().onPlayerDeath += this.onPlayerDeathEvent;
 		audioManager = GetComponent<AudioManager> ();
-		playerObject.GetComponent<Player> ().onFootStepHandler += audioManager.handleOnFootStepEvent;
-		playerObject.GetComponent<Player> ().onPlonsHandler += audioManager.handleOnPlonsEvent;
+		Player player = playerObject.GetComponent<Player> ();
+		player.onFootStepHandler += audioManager.handleOnFootStepEvent;
+		player.onPlonsHandler += audioManager.handleOnPlonsEvent;
+		PlayerActions playerActions = playerObject.GetComponent<PlayerActions> ();
+		playerActions.onArmBombHandler += audioManager.handleOnArmBombEvent;
+		playerActions.onThrowBombHandler += audioManager.handleOnThrowBombEvent;
+
 	}
 
 }

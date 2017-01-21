@@ -8,6 +8,9 @@ public class AudioManager : MonoBehaviour {
 	public AudioClip timerSound;
 	//public AudioClip winnerSound;
 	public AudioClip plonsSound;
+	public AudioClip armBombSound;
+	public AudioClip throwBombSound;
+
 
 	public AudioClip[] footStepSounds;
 
@@ -44,5 +47,13 @@ public class AudioManager : MonoBehaviour {
 
 	public void handleOnPlonsEvent(object sender, System.EventArgs args) {
 		audio.PlayOneShot(plonsSound, 0.75F);
+	}
+
+	public void handleOnArmBombEvent(object sender, System.EventArgs args) {
+		audio.PlayOneShot(armBombSound, 0.5F);
+	}
+
+	public void handleOnThrowBombEvent(object sender, System.EventArgs args) {
+		audio.PlayOneShot(throwBombSound, 0.5F);
 	}
 }

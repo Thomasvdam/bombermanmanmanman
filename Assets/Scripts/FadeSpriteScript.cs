@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FadeSpriteScript : MonoBehaviour {
 
+	//Fade in: min=0, max1
+	//Fade out: min=1, max=0
 	public float minimum = 0.0f;
 	public float maximum = 1f;
 	public float duration = 5.0f;

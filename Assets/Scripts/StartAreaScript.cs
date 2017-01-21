@@ -24,7 +24,7 @@ public class StartAreaScript : MonoBehaviour {
 		if (co.tag.Equals (TAG_PLAYER)) {
 			mPlayersInArea++;
 			if (mPlayersInArea == AMOUNT_PLAYERS_IN_AREA_NEEDED) {
-				startTimer ();
+				StartTimer ();
 			}
 		}
 	}

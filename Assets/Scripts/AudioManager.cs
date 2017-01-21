@@ -9,7 +9,7 @@ public class AudioManager : MonoBehaviour {
 	//public AudioClip winnerSound;
 	//public AudioClip fattySound;
 
-	//public AudioClip[] followerEnteredSounds;
+	public AudioClip[] footStepSounds;
 
 	AudioSource audio;
 	
@@ -38,7 +38,7 @@ public class AudioManager : MonoBehaviour {
 		audio.PlayOneShot(timerSound, 1F);
 	}
 
-	/*public void handleOnFollowerEnteredBaseEvent(object sender, System.EventArgs args) {
-		audio.PlayOneShot(followerEnteredSounds[Random.Range(0, followerEnteredSounds.Length)], 0.5F);
-	}*/
+	public void handleOnFootStepEvent(object sender, System.EventArgs args) {
+		audio.PlayOneShot(footStepSounds[Random.Range(0, footStepSounds.Length)], 0.1F);
+	}
 }

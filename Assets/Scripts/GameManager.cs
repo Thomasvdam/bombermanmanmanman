@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour {
 
 	private static GameManager mManager = null;
+	private AudioManager audioManager;
 
 	public float waitUntilFinish;
 
@@ -95,6 +96,8 @@ public class GameManager : MonoBehaviour {
 
 		GameObject playerObject = Instantiate (prefab, location.transform.position, location.transform.rotation);
 		playerObject.GetComponent<Player> ().onPlayerDeath += this.onPlayerDeathEvent;
+		audioManager = GetComponent<AudioManager> ();
+		playerObject.GetComponent<Player> ().onFootStepHandler += audioManager.handleOnFootStepEvent;
 	}
 
 }

@@ -32,11 +32,9 @@ public class StartAreaScript : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D co) {
-		Debug.Log("onTriggerEnter2D: " + co.tag);
 		if (co.tag.Equals (Constants.TAG_PLAYER)) {
 			mPlayersInArea++;
 			if (mPlayersInArea == AMOUNT_PLAYERS_IN_AREA_NEEDED) {
-				Debug.Log ("Starting timer");
 				onStartTimerEvent ();
 			}
 		}

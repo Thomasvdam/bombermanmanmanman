@@ -55,7 +55,6 @@ public class TimerManager : MonoBehaviour {
 			checkForSecondSound();
 			timerText.gameObject.SetActive(true);
 			time -= Time.deltaTime;
-			Debug.Log ("update time: " + time + "s");
 			timerText.text = (int)time + "s";
 			checkTimePassed ();
 		}

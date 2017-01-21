@@ -74,6 +74,7 @@ public class Player : MonoBehaviour, IFallable {
 		isFalling = true;
 		rBody.velocity = Vector2.zero;
 		StartCoroutine(Kill(fallingDuration));
+		CancelInvoke();
 	}
 
 	IEnumerator Kill (float timer){

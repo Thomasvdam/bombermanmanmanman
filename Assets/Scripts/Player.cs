@@ -158,7 +158,6 @@ public class Player : MonoBehaviour, IFallable {
 	}
 
 	IEnumerator ExecuteVibrate (float strengthLeft, float strengthRight, float duration){
-		Debug.Log (strengthLeft + ", " + strengthRight);
 		GamePad.SetVibration ((XInputDotNetPure.PlayerIndex)playerId-1, strengthLeft, strengthRight);
 		yield return new WaitForSeconds (duration);
 		GamePad.SetVibration ((XInputDotNetPure.PlayerIndex)playerId-1, 0f, 0f);

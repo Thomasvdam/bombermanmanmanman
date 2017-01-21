@@ -74,6 +74,7 @@ public class TimerManager : MonoBehaviour {
 	private void checkTimePassed() {
 		if (time < 1) {
 			reset();
+			timerText.gameObject.SetActive(false);
 			onTimerEndedSoundEvent();
 			mArgs.onTimerEndedEvent ();
 		}
@@ -81,9 +82,9 @@ public class TimerManager : MonoBehaviour {
 
 	//reset variables so the timer can be re-used again
 	private void reset() {
+		timerText.text = "Enter the start area";
 		secondSoundActivated = false;
 		startTimer = false;
 		CancelInvoke();
-		timerText.gameObject.SetActive(false);
 	}
 }

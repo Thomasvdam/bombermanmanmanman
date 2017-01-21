@@ -16,7 +16,7 @@ public class PlayerActions : MonoBehaviour {
 			return;
 		}
 
-		newBomb = Instantiate (projectile, gameObject.transform.up * 1f, gameObject.transform.rotation) as GameObject;
+		newBomb = Instantiate (projectile, gameObject.transform.position + gameObject.transform.up * 1f, gameObject.transform.rotation) as GameObject;
 		newBomb.transform.SetParent (gameObject.transform);
 
 		this.cooldownTimeStamp = Time.time + fireCooldown;

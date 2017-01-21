@@ -49,6 +49,9 @@ public class GameManager : MonoBehaviour {
 		StartCoroutine(Finish(waitUntilFinish));
 
 		SpawnPlayer (1);
+		SpawnPlayer (2);
+		SpawnPlayer (3);
+		SpawnPlayer (4);
 	}
 
 	void SpawnPlayer(int id) {

@@ -1,63 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
+using XboxCtrlrInput;
 
 public class Controller : MonoBehaviour {
-
-	//Controller 1 to 4
-	public int id = 1; //Default id
-	private int numControllers;
-	public int fireButtonID = 16;  //Default Fire button ID
-	public int abilityButtonID = 14; //Default Ability button ID
-
+	public XboxController playerNumber = XboxController.First;
 	private Player player;
 
 	void Start () {
 		player = gameObject.GetComponent<Player> ();
 	}
 
-	/*
-	 *	We can make the checkButton functions return a boolean value for wether the Input was consumed and then stop checking buttons for that frame. 
-	 *	We can do queueing.
-	 */
-
 	// Update is called once per frame
 	void Update () {
-//		checkAnyButtonPressedController (id);
-		checkFireButton ();
 		checkAxes ();
+		checkFireButton ();
 		checkAbilityButton ();
 	}
 
 	private void checkAxes() {
-		float x = Input.GetAxisRaw ("joystick " + id + " X axis");
-		float y = Input.GetAxisRaw ("joystick " + id + " Y axis");
-
-//		Debug.Log("joystick" + id + "Xaxis: " + x + " Y axis: " + y);
+		float x = XCI.GetAxis(XboxAxis.LeftStickX, playerNumber);
+		float y = XCI.GetAxis(XboxAxis.LeftStickY, playerNumber);
 
 		player.Move (x, y);
 	}
 
 	private void checkFireButton() {
-		if (Input.GetKeyDown ("joystick " + id + " button " + fireButtonID)) {
+		if (XCI.GetButtonDown(XboxButton.A, playerNumber)) {
 			player.ArmBomb ();
-		} else if (Input.GetKeyUp("joystick " + id + " button " + fireButtonID)) {
+		} else if (XCI.GetButtonUp(XboxButton.A, playerNumber)) {
 			player.ThrowBomb ();
 		}
 	}
 
 	private void checkAbilityButton() {
-		if (Input.GetKeyDown ("joystick " + id + " button " + abilityButtonID)) {
+		if (XCI.GetButtonDown(XboxButton.B, playerNumber)) {
 			Debug.Log ("Abilitybutton down");
 		}
-	}
-
-	public static bool checkAnyButtonPressedController(int id) {
-		for (int i = 0; i<20; i++) {
-			if (Input.GetKeyDown ("joystick " + id + " button " + i)) {
-				Debug.Log ("joystick " + id + " button " + i);
-				return true;
-			}
-		}
-		return false;
 	}
 }

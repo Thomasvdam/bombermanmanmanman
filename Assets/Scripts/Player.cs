@@ -5,6 +5,7 @@ using System;
 
 public class Player : MonoBehaviour, IFallable {
 
+	public int playerId = 1;
 	public float speed = 1;
 	public float fallingSpeed = 1;
 	public float fallingDuration = 2;
@@ -79,7 +80,7 @@ public class Player : MonoBehaviour, IFallable {
 
 		Destroy (gameObject);
 		if (onPlayerDeath != null) {
-			onPlayerDeath (gameObject, 1);
+			onPlayerDeath (gameObject, playerId);
 		}
 	}
 }

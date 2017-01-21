@@ -25,8 +25,10 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 		if (isFalling) {
 			transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(0.1f, 0.1f, 0.1f), Time.deltaTime * fallingSpeed);
 		}
-
-		transform.position = transform.parent.position + transform.parent.up * 1f; 
+	
+		if (transform.parent) {
+			transform.position = transform.parent.position + transform.parent.up * 1f;
+		}
 	}
 
 	IEnumerator Explode (float waitTillExplode){
@@ -34,6 +36,7 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 		//Instantiate shockwave when time is over
 		if (gameObject) {
 			Instantiate (shockwave, transform.position, Quaternion.identity);
+			Debug.Log ("STEVEN");
 			Destroy (this.gameObject);	
 		}
 	}

@@ -6,8 +6,14 @@ public class Controller : MonoBehaviour {
 	//Controller 1 to 4
 	public int id = 1; //Default id
 	private int numControllers;
-	public string fireButton = "joystick 1 button 0";  //Default Fire button
-	public string abilityButton = "joystick 1 button 1"; //Default Ability button
+	public int fireButtonID = 16;  //Default Fire button ID
+	public int abilityButtonID = 14; //Default Ability button ID
+
+	private Player player;
+
+	void Start () {
+		player = gameObject.GetComponent<Player> ();
+	}
 
 	/*
 	 *	We can make the checkButton functions return a boolean value for wether the Input was consumed and then stop checking buttons for that frame. 
@@ -16,7 +22,7 @@ public class Controller : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		checkAnyButtonPressedController (id);
+//		checkAnyButtonPressedController (id);
 		checkFireButton ();
 		checkAxes ();
 		checkAbilityButton ();
@@ -26,25 +32,23 @@ public class Controller : MonoBehaviour {
 		float x = Input.GetAxisRaw ("joystick " + id + " X axis");
 		float y = Input.GetAxisRaw ("joystick " + id + " Y axis");
 
-		Debug.Log("joystick" + id + "Xaxis: " + x + " Y axis: " + y);
+//		Debug.Log("joystick" + id + "Xaxis: " + x + " Y axis: " + y);
 
-		gameObject.GetComponent<Player>().Move (x, y);
+		player.Move (x, y);
 	}
 
 	private void checkFireButton() {
-		if (Input.GetKeyDown (fireButton)) {
-			Debug.Log ("Firebutton down");
+		if (Input.GetKeyDown ("joystick " + id + " button " + fireButtonID)) {
+			player.ArmBomb ();
+		} else if (Input.GetKeyUp("joystick " + id + " button " + fireButtonID)) {
+			player.ThrowBomb ();
 		}
 	}
 
 	private void checkAbilityButton() {
-		if (Input.GetKeyDown (abilityButton)) {
+		if (Input.GetKeyDown ("joystick " + id + " button " + abilityButtonID)) {
 			Debug.Log ("Abilitybutton down");
 		}
-	}
-
-	private bool checkButtonDown(string button) {
-		return Input.GetKeyDown (button);
 	}
 
 	public static bool checkAnyButtonPressedController(int id) {

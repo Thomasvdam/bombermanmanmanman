@@ -14,6 +14,14 @@ public class BombBehaviour : MonoBehaviour {
 		StartCoroutine(Explode(waitTillExplode));
 	}
 
+	void Update () {
+		if (!transform.parent) {
+			return;
+		}
+
+		transform.position = transform.parent.position;
+	}
+
 	IEnumerator Explode (float waitTillExplode){
 		yield return new WaitForSeconds (waitTillExplode);
 		//Instantiate shockwave when time is over

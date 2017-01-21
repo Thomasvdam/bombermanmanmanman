@@ -7,7 +7,7 @@ public class PlayerActions : MonoBehaviour {
 	public GameObject projectile;
 
 	public float fireCooldown = 1f;
-	private float throwingStrength = 1200f;
+	private float throwingStrength = 900f;
 
 	private float cooldownTimeStamp;
 	private GameObject newBomb;

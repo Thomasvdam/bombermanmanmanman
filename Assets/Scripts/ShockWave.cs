@@ -6,9 +6,9 @@ public class ShockWave : MonoBehaviour {
 
 	public float maxRadius = 3;
 	public float explosionFactor = 2;
-	public float blastPowerFactor = 350;
+	private float blastPowerFactor = 1200f;
 	public float blastScale = 1;
-	public float blastCap = 4;
+	private float blastCap = 3;
 
 	public Sprite[] explosion;
 	public float animationDuration = 0.1f;
@@ -37,15 +37,16 @@ public class ShockWave : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
+		Player otherPlayer = other.GetComponent<Player> ();
 		//if the shockwave blast hits the player
-		if (other.tag == "Player" && !other.GetComponent<Player> ().IsGracePeriodActive()) {
+		if (other.tag == "Player" && !otherPlayer.IsGracePeriodActive()) {
 			Vector2 dir = (other.transform.position - transform.position).normalized;
 
 			float blastPower = Mathf.Clamp(maxRadius / circleCollider.radius, 0, blastCap);
-
 			//get player rigidbody and add force inverse to the distance from the center
 			other.GetComponent<Rigidbody2D>().AddForce (blastPowerFactor * dir * blastPower);
 
+			otherPlayer.Vibrate (blastPower / 1.5f, blastPower / 1.5f, blastPower / 3f);
 		}
 	}
 

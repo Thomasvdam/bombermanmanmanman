@@ -27,10 +27,18 @@ public class Player : MonoBehaviour, IFallable {
 	public delegate void EventHandler(GameObject e, int id);
 	public event EventHandler onPlayerDeath;
 	public event System.EventHandler onFootStepHandler; //handles that we want to play the sound for a footstep
+	public event System.EventHandler onPlonsHandler; //handles that we want to play the sound for falling (plonsing)
 
 	private PlayerActions playerActions;
 
 	public void onFootStepEvent() {
+		System.EventHandler handler = onFootStepHandler;
+		if (handler != null) {
+			handler(this, System.EventArgs.Empty);
+		}
+	}
+
+	public void onPlonsEvent() {
 		System.EventHandler handler = onFootStepHandler;
 		if (handler != null) {
 			handler(this, System.EventArgs.Empty);
@@ -112,6 +120,7 @@ public class Player : MonoBehaviour, IFallable {
 	}
 
 	public void Fall () {
+		onPlonsEvent ();
 		isFalling = true;
 		rBody.velocity = Vector2.zero;
 		StartCoroutine(Kill(fallingDuration));

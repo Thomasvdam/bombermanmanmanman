@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour {
 		playerObject.GetComponent<Player> ().onPlayerDeath += this.onPlayerDeathEvent;
 		audioManager = GetComponent<AudioManager> ();
 		playerObject.GetComponent<Player> ().onFootStepHandler += audioManager.handleOnFootStepEvent;
+		playerObject.GetComponent<Player> ().onPlonsHandler += audioManager.handleOnPlonsEvent;
 	}
 
 }

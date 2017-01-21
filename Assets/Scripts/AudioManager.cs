@@ -7,7 +7,7 @@ public class AudioManager : MonoBehaviour {
 	public AudioClip secondSound;
 	public AudioClip timerSound;
 	//public AudioClip winnerSound;
-	//public AudioClip fattySound;
+	public AudioClip plonsSound;
 
 	public AudioClip[] footStepSounds;
 
@@ -40,5 +40,9 @@ public class AudioManager : MonoBehaviour {
 
 	public void handleOnFootStepEvent(object sender, System.EventArgs args) {
 		audio.PlayOneShot(footStepSounds[Random.Range(0, footStepSounds.Length)], 0.1F);
+	}
+
+	public void handleOnPlonsEvent(object sender, System.EventArgs args) {
+		audio.PlayOneShot(plonsSound, 0.75F);
 	}
 }

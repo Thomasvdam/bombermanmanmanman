@@ -17,7 +17,10 @@ public class PlayerActions : MonoBehaviour {
 		}
 
 		newBomb = Instantiate (projectile, gameObject.transform.position + gameObject.transform.up * 1f, gameObject.transform.rotation) as GameObject;
+
 		newBomb.transform.SetParent (gameObject.transform);
+
+        newBomb.GetComponent<BombBehaviour>().Armed();
 
 		this.cooldownTimeStamp = Time.time + fireCooldown;
 	}
@@ -26,6 +29,8 @@ public class PlayerActions : MonoBehaviour {
 		if (!newBomb) {
 			return;
 		}
+
+        newBomb.GetComponent<BombBehaviour>().Thrown();
 
 		if (direction.magnitude > 0.9f) {
 			//throw far

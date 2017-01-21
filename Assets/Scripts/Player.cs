@@ -21,14 +21,30 @@ public class Player : MonoBehaviour, IFallable {
 	public GameObject footstepPrefab;
 	private bool isLeftFootstep;
 
-	private PlayerActions actions;
+	private PlayerActions actions; 
 	private Rigidbody2D rBody;
 	private bool isFalling = false;
 
 	public delegate void EventHandler(GameObject e, int id);
 	public event EventHandler onPlayerDeath;
+	public event System.EventHandler onFootStepHandler; //handles that we want to play the sound for a footstep
+	public event System.EventHandler onPlonsHandler; //handles that we want to play the sound for falling (plonsing)
 
 	private PlayerActions playerActions;
+
+	public void onFootStepEvent() {
+		System.EventHandler handler = onFootStepHandler;
+		if (handler != null) {
+			handler(this, System.EventArgs.Empty);
+		}
+	}
+
+	public void onPlonsEvent() {
+		System.EventHandler handler = onPlonsHandler;
+		if (handler != null) {
+			handler(this, System.EventArgs.Empty);
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -75,10 +91,11 @@ public class Player : MonoBehaviour, IFallable {
 	}
 
 	void showFootStep() {
-		if (rBody.velocity.x == 0 && rBody.velocity.y == 0) {
+		if (isVelocityTooLow()) {
 			return;
 		}
 		GameObject footstep = Instantiate (footstepPrefab, gameObject.transform.position, gameObject.transform.rotation) as GameObject;
+		onFootStepEvent();
 
 		if (isLeftFootstep) {
 			footstep.GetComponent<SpriteRenderer> ().flipX = true;
@@ -87,15 +104,24 @@ public class Player : MonoBehaviour, IFallable {
 		isLeftFootstep = !isLeftFootstep;
 	}
 
+	private bool isVelocityTooLow() {
+		return rBody.velocity.x < 1.5 && rBody.velocity.x > -1.5 && rBody.velocity.y < 1.5 && rBody.velocity.y > -1.5;
+	}
+
 	public void ArmBomb() {
-		actions.ArmBomb ();
+		if (Constants.isStartedGame) {
+			actions.ArmBomb ();
+		}
 	}
 
 	public void ThrowBomb(float x, float y) {
-		actions.ThrowBomb (new Vector2(x, y));
+		if (Constants.isStartedGame) {
+			actions.ThrowBomb (new Vector2 (x, y));
+		}
 	}
 
 	public void Fall () {
+		onPlonsEvent ();
 		isFalling = true;
 		rBody.velocity = Vector2.zero;
 		StartCoroutine(Kill(fallingDuration));

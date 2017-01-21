@@ -6,6 +6,9 @@ public class Controller : MonoBehaviour {
 	public XboxController playerNumber = XboxController.First;
 	private Player player;
 
+	private float x;
+	private float y;
+
 	void Start () {
 		player = gameObject.GetComponent<Player> ();
 	}
@@ -18,8 +21,8 @@ public class Controller : MonoBehaviour {
 	}
 
 	private void checkAxes() {
-		float x = XCI.GetAxis(XboxAxis.LeftStickX, playerNumber);
-		float y = XCI.GetAxis(XboxAxis.LeftStickY, playerNumber);
+		x = XCI.GetAxis(XboxAxis.LeftStickX, playerNumber);
+		y = XCI.GetAxis(XboxAxis.LeftStickY, playerNumber);
 
 		player.Move (x, y);
 	}
@@ -28,7 +31,7 @@ public class Controller : MonoBehaviour {
 		if (XCI.GetButtonDown(XboxButton.A, playerNumber)) {
 			player.ArmBomb ();
 		} else if (XCI.GetButtonUp(XboxButton.A, playerNumber)) {
-			player.ThrowBomb ();
+			player.ThrowBomb (x, y);
 		}
 	}
 

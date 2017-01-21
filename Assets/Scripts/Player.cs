@@ -30,7 +30,7 @@ public class Player : MonoBehaviour {
 		actions.ArmBomb ();
 	}
 
-	public void ThrowBomb() {
-		actions.ThrowBomb (rBody.velocity.normalized);
+	public void ThrowBomb(float x, float y) {
+		actions.ThrowBomb (new Vector2(x, y));
 	}
 }

@@ -5,6 +5,7 @@ using System;
 
 public class Player : MonoBehaviour, IFallable {
 
+	public int playerId = 1;
 	public float speed = 1;
 	public float fallingSpeed = 1;
 	public float fallingDuration = 2;
@@ -23,7 +24,7 @@ public class Player : MonoBehaviour, IFallable {
 	void Start () {
 		actions = GetComponent<PlayerActions> ();
 		rBody = GetComponent<Rigidbody2D> ();
-		InvokeRepeating ("showFootStep", 0f, 0.5f);
+		InvokeRepeating ("showFootStep", 0f, 0.2f);
 	}
 	
 	// Update is called once per frame
@@ -51,7 +52,7 @@ public class Player : MonoBehaviour, IFallable {
 		if (rBody.velocity.x == 0 && rBody.velocity.y == 0) {
 			return;
 		}
-		GameObject footstep = Instantiate (footstepPrefab, gameObject.transform.position + gameObject.transform.up * 1f, gameObject.transform.rotation) as GameObject;
+		GameObject footstep = Instantiate (footstepPrefab, gameObject.transform.position, gameObject.transform.rotation) as GameObject;
 
 		if (isLeftFootstep) {
 			footstep.GetComponent<SpriteRenderer> ().flipX = true;
@@ -79,7 +80,7 @@ public class Player : MonoBehaviour, IFallable {
 
 		Destroy (gameObject);
 		if (onPlayerDeath != null) {
-			onPlayerDeath (gameObject, 1);
+			onPlayerDeath (gameObject, playerId);
 		}
 	}
 }

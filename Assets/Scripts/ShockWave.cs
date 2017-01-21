@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ShockWave : MonoBehaviour {
 
-	public float maxRadius;
-	public float explosionFactor;
-	public float blastPowerFactor;
-	public float blastScale;
-	public float blastCap;
+	public float maxRadius = 40;
+	public float explosionFactor = 2;
+	public float blastPowerFactor = 350;
+	public float blastScale = 1;
+	public float blastCap = 4;
 
 	float minRadius = 0.01f;
 	float currentTime;
@@ -16,6 +16,7 @@ public class ShockWave : MonoBehaviour {
 	Transform radius;
 
 	void Start () {
+		Debug.Log ("PROBERT");
 		radius = this.transform;
 		radius.localScale = new Vector2(1, 1) * minRadius;
 		currentTime = Time.time;

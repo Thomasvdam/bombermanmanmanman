@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using XInputDotNetPure; // Required in C#
 
 public class Player : MonoBehaviour, IFallable {
 
@@ -124,5 +125,16 @@ public class Player : MonoBehaviour, IFallable {
 
 		myRenderer.color = prevColor;
 		gracePeriodActive = false;
+	}
+
+	public void Vibrate(float motorLeft, float motorRight, float duration) {
+		StartCoroutine (ExecuteVibrate (motorLeft, motorRight, duration));
+	}
+
+	IEnumerator ExecuteVibrate (float strengthLeft, float strengthRight, float duration){
+		Debug.Log (strengthLeft + ", " + strengthRight);
+		GamePad.SetVibration ((XInputDotNetPure.PlayerIndex)playerId-1, strengthLeft, strengthRight);
+		yield return new WaitForSeconds (duration);
+		GamePad.SetVibration ((XInputDotNetPure.PlayerIndex)playerId-1, 0f, 0f);
 	}
 }

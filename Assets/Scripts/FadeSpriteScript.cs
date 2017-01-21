@@ -19,6 +19,9 @@ public class FadeSpriteScript : MonoBehaviour {
 	void Update() {
 		float t = (Time.time - startTime) / duration;
 		Color color = sprite.color;
-		sprite.color = new Color(color.r,color.g,color.b,Mathf.SmoothStep(minimum, maximum, t));        
+		sprite.color = new Color(color.r,color.g,color.b,Mathf.SmoothStep(minimum, maximum, t));    
+		if (t > 1) {
+			Destroy (gameObject);
+		}
 	}
 }

@@ -9,6 +9,9 @@ public class Player : MonoBehaviour, IFallable {
 	public float fallingSpeed = 1;
 	public float fallingDuration = 2;
 
+	public GameObject footstepPrefab;
+	private bool isLeftFootstep;
+
 	private PlayerActions actions;
 	private Rigidbody2D rBody;
 	private bool isFalling = false;
@@ -20,6 +23,7 @@ public class Player : MonoBehaviour, IFallable {
 	void Start () {
 		actions = GetComponent<PlayerActions> ();
 		rBody = GetComponent<Rigidbody2D> ();
+		InvokeRepeating ("showFootStep", 0f, 0.5f);
 	}
 	
 	// Update is called once per frame
@@ -41,6 +45,19 @@ public class Player : MonoBehaviour, IFallable {
 		}
 
 		rBody.AddForce (direction * speed);
+	}
+
+	void showFootStep() {
+		if (rBody.velocity.x == 0 && rBody.velocity.y == 0) {
+			return;
+		}
+		GameObject footstep = Instantiate (footstepPrefab, gameObject.transform.position + gameObject.transform.up * 1f, gameObject.transform.rotation) as GameObject;
+
+		if (isLeftFootstep) {
+			footstep.GetComponent<SpriteRenderer> ().flipX = true;
+		}
+
+		isLeftFootstep = !isLeftFootstep;
 	}
 
 	public void ArmBomb() {

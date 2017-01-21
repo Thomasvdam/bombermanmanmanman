@@ -51,7 +51,7 @@ public class Player : MonoBehaviour, IFallable {
 		if (rBody.velocity.x == 0 && rBody.velocity.y == 0) {
 			return;
 		}
-		GameObject footstep = Instantiate (footstepPrefab, gameObject.transform.position + gameObject.transform.up * 1f, gameObject.transform.rotation) as GameObject;
+		GameObject footstep = Instantiate (footstepPrefab, gameObject.transform.position, gameObject.transform.rotation) as GameObject;
 
 		if (isLeftFootstep) {
 			footstep.GetComponent<SpriteRenderer> ().flipX = true;

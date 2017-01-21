@@ -1,41 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class StartAreaScript : MonoBehaviour {
 
-	private const int AMOUNT_PLAYERS_IN_AREA_NEEDED = 4;
-	private const string TAG_PLAYER = "Player";
-
+	public const int AMOUNT_PLAYERS_IN_AREA_NEEDED = 1;
+	public float countdownTime = 4f;
 	private int mPlayersInArea = 0;
 
-	// Use this for initialization
-	void Start () {
-		
+	public event EventHandler startTimerHandler;
+	public event EventHandler abortTimerHandler;
+
+	public void onStartTimerEvent() {
+		EventHandler handler = startTimerHandler;
+		if (handler != null) {
+			handler(this, new TimerArgs(this.handleTimerEndedEvent, countdownTime));
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	public void onAbortTimerEvent() {
+		EventHandler handler = abortTimerHandler;
+		if (handler != null) {
+			handler(this, System.EventArgs.Empty);
+		}
+	}
+
+	public void handleTimerEndedEvent(object sender, System.EventArgs args) {
+		gameObject.SetActive (false);
+		//gamemanager.startgame
 	}
 
 	void OnTriggerEnter2D(Collider2D co) {
-		Debug.Log ("onTriggerEnter2D");
-		if (co.tag.Equals (TAG_PLAYER)) {
+		Debug.Log("onTriggerEnter2D: " + co.tag);
+		if (co.tag.Equals (Constants.TAG_PLAYER)) {
 			mPlayersInArea++;
 			if (mPlayersInArea == AMOUNT_PLAYERS_IN_AREA_NEEDED) {
-				StartTimer ();
+				Debug.Log ("Starting timer");
+				onStartTimerEvent ();
 			}
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D co) {
-		Debug.Log ("onTriggerExit2D");
-		if (co.tag.Equals (TAG_PLAYER)) {
+		if (co.tag.Equals (Constants.TAG_PLAYER)) {
 			mPlayersInArea--;
+			if (mPlayersInArea < AMOUNT_PLAYERS_IN_AREA_NEEDED) {
+				onAbortTimerEvent ();
+			}
 		}
-	}
-
-	private void StartTimer() {
 	}
 }

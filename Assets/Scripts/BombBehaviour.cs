@@ -37,7 +37,9 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 	}
 
     void FixedUpdate () {
-        ScaleProjectile();
+        if (!isFalling && isThrown){
+            ScaleProjectile();
+        }
     }
 
 	IEnumerator Explode (float waitTillExplode){
@@ -49,12 +51,10 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 		}
 	}
 
-    public void ScaleProjectile () {
-        if (!isFalling && isThrown) {
-            ratioThrownTime = (Time.time - thrownTime) / travelTime;
-            scale = -(Mathf.Pow(ratioThrownTime * 2.0f, 2.0f)) + 2 * (ratioThrownTime * 2.0f);
-            transform.localScale = new Vector3(initialScale.x + scale * projectileScaleFactor, initialScale.y + scale * projectileScaleFactor, initialScale.z + scale * projectileScaleFactor);
-        }
+    private void ScaleProjectile () {
+        ratioThrownTime = (Time.time - thrownTime) / travelTime;
+        scale = -(Mathf.Pow(ratioThrownTime * 2.0f, 2.0f)) + 2 * (ratioThrownTime * 2.0f);
+        transform.localScale = new Vector3(initialScale.x + scale * projectileScaleFactor, initialScale.y + scale * projectileScaleFactor, initialScale.z + scale * projectileScaleFactor);
     }
 
     public void Armed () {

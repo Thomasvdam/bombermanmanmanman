@@ -12,6 +12,9 @@ public class BombBehaviour : MonoBehaviour, IFallable {
     public float projectileScaleFactor = 0.5f;
     public float rotationSpeed = 3.0f;
 
+	public delegate void EventHandler();
+	public event EventHandler onBombDespawns;
+
 	private bool isFalling = false;
 	private bool isThrown = false;
     private float travelTime;
@@ -49,7 +52,10 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 		//Instantiate shockwave when time is over
 		if (gameObject) {
 			Instantiate (shockwave, transform.position, Quaternion.identity);
-			Destroy (this.gameObject);	
+			Destroy (this.gameObject);
+			if (onBombDespawns != null) {
+				onBombDespawns ();
+			}
 		}
 	}
 
@@ -84,5 +90,8 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 	IEnumerator Kill (float timer){
 		yield return new WaitForSeconds (timer);
 		Destroy (this.gameObject);
+		if (onBombDespawns != null) {
+			onBombDespawns ();
+		}
 	}
 }

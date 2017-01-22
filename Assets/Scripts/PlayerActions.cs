@@ -12,6 +12,9 @@ public class PlayerActions : MonoBehaviour {
 	private float cooldownTimeStamp;
 	private GameObject newBomb;
 	private Vector2 oldBombAim = new Vector2 (0, 0);
+	public GameObject powerBarPrefab;
+	private GameObject powerBarObj;
+	private PowerBar powerBar;
 
 	public event EventHandler onArmBombHandler; //handles that we want to play the sound for activating a bomb
 	public event EventHandler onThrowBombHandler; //handles that we want to play the sound for throwing a bomb
@@ -38,6 +41,11 @@ public class PlayerActions : MonoBehaviour {
 		newBomb = Instantiate (projectile, gameObject.transform.position + gameObject.transform.up * 1f, gameObject.transform.rotation) as GameObject;
 
 		newBomb.transform.SetParent (gameObject.transform);
+
+		newBomb.GetComponent<BombBehaviour> ().onBombDespawns += this.DestroyPowerBar;
+		powerBarObj = Instantiate (powerBarPrefab, gameObject.transform.position + Vector3.down, gameObject.transform.rotation, gameObject.transform) as GameObject;
+		powerBar = powerBarObj.GetComponent<PowerBar> ();
+
 		onArmBombSoundEvent ();
 
         newBomb.GetComponent<BombBehaviour>().Armed();
@@ -56,6 +64,9 @@ public class PlayerActions : MonoBehaviour {
 		if (direction.x != 0 || direction.y != 0) {
 			onThrowBombSound ();
 		}
+
+		this.DestroyPowerBar ();
+		newBomb.GetComponent<BombBehaviour> ().onBombDespawns -= this.DestroyPowerBar;
 		newBomb = null;
 	}
 
@@ -64,15 +75,26 @@ public class PlayerActions : MonoBehaviour {
 			return;
 		}
 
-		if (dir.magnitude <= 0) {
+		Vector2 normalizedDir = dir.normalized;
+
+		if (normalizedDir.magnitude <= 0) {
 			if (oldBombAim.magnitude > 0) {
-				dir = oldBombAim;
+				normalizedDir = oldBombAim;
 			} else {
-				dir = new Vector2 (0, 1);
+				normalizedDir = new Vector2 (0, 1);
 			}
 		}
-			
-		newBomb.transform.position = (Vector2)transform.position + dir * 1f;
-		oldBombAim = dir;
+
+		if (powerBar != null) {
+			powerBar.UpdateBar(dir);
+		}
+
+		newBomb.transform.position = (Vector2)transform.position + normalizedDir * 1f;
+		oldBombAim = normalizedDir;
+	}
+
+	private void DestroyPowerBar() {
+		Destroy (powerBarObj);
+		powerBar = null;
 	}
 }

@@ -96,7 +96,7 @@ public class Player : MonoBehaviour, IFallable {
 			return;
 		}
 
-		playerActions.setBombAim (new Vector2(horizontal, vertical).normalized);
+		playerActions.setBombAim (new Vector2(horizontal, vertical));
 	}
 
 	void showFootStep() {

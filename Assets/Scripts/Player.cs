@@ -86,7 +86,7 @@ public class Player : MonoBehaviour, IFallable {
 		rBody.velocity += direction * speed / 10;
 
 		float angle = 180 - Mathf.Atan2 (direction.y, direction.x) * 180 / Mathf.PI;
-		int spriteNumber = (int) Mathf.Round(angle / 45) - 1;
+		int spriteNumber = Mathf.Clamp((int) Mathf.Round(angle / 45) - 1, 0, 7);
 		spriteRender.sprite = character [spriteNumber];
 
 	}

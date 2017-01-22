@@ -4,9 +4,11 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using XboxCtrlrInput;
 
 public class GameManager : MonoBehaviour {
 
+	public XboxController xboxController;
 	private static GameManager mManager = null;
 	private AudioManager audioManager;
 
@@ -31,6 +33,11 @@ public class GameManager : MonoBehaviour {
 	public GameObject spawnLocation2;
 	public GameObject spawnLocation3;
 	public GameObject spawnLocation4;
+
+	private GameObject player1;
+	private GameObject player2;
+	private GameObject player3;
+	private GameObject player4;
 
 	public void onPlayerDeathEvent(object sender, int id) {
 		if (Constants.isStartedGame) {
@@ -98,7 +105,7 @@ public class GameManager : MonoBehaviour {
 		// Begin Timer for Finish
 		StartCoroutine(Finish(waitUntilFinish));
 
-		for (int i = 0; i < numberOfPlayers; i++) {
+		for (int i = 0; i < XCI.GetNumPluggedCtrlrs(); i++) {
 			SpawnPlayer (i + 1);
 			lives.Add (numberOfLives);
 		}
@@ -112,25 +119,43 @@ public class GameManager : MonoBehaviour {
 		case 1:
 			prefab = playerPrefab1;
 			location = spawnLocation1;
+			player1 = instantiatePlayer (prefab, location);
+			GameObject.Find ("Lives1").GetComponent<UnityEngine.UI.RawImage> ().enabled = true;
+			GameObject.Find ("TextLives1").GetComponent<UnityEngine.UI.Text> ().enabled = true;
 			break;
 		case 2:
 			prefab = playerPrefab2;
 			location = spawnLocation2;
+			player2 = instantiatePlayer (prefab, location);
+			GameObject.Find ("Lives2").GetComponent<UnityEngine.UI.RawImage> ().enabled = true;
+			GameObject.Find ("TextLives2").GetComponent<UnityEngine.UI.Text> ().enabled = true;
 			break;
 		case 3:
 			prefab = playerPrefab3;
 			location = spawnLocation3;
+			player3 = instantiatePlayer (prefab, location);
+			GameObject.Find ("Lives3").GetComponent<UnityEngine.UI.RawImage> ().enabled = true;
+			GameObject.Find ("TextLives3").GetComponent<UnityEngine.UI.Text> ().enabled = true;
 			break;
 		case 4:
 			prefab = playerPrefab4;
 			location = spawnLocation4;
+			player4 = instantiatePlayer (prefab, location);
+			GameObject.Find ("Lives4").GetComponent<UnityEngine.UI.RawImage> ().enabled = true;
+			GameObject.Find ("TextLives4").GetComponent<UnityEngine.UI.Text> ().enabled = true;
 			break;
 		default:
 			prefab = playerPrefab1;
 			location = spawnLocation1;
+			player1 = instantiatePlayer (prefab, location);
+			GameObject.Find ("Lives1").GetComponent<UnityEngine.UI.RawImage> ().enabled = true;
+			GameObject.Find ("TextLives1").GetComponent<UnityEngine.UI.Text> ().enabled = true;
 			break;
 		}
+	}
 
+	//instantiates a player object, sets the listeners for events and return the gameobject
+	private GameObject instantiatePlayer(GameObject prefab, GameObject location) {
 		GameObject playerObject = Instantiate (prefab, location.transform.position, location.transform.rotation);
 		Player player = playerObject.GetComponent<Player> ();
 		player.onPlayerDeath += this.onPlayerDeathEvent;
@@ -139,6 +164,7 @@ public class GameManager : MonoBehaviour {
 		PlayerActions playerActions = playerObject.GetComponent<PlayerActions> ();
 		playerActions.onArmBombHandler += audioManager.handleOnArmBombEvent;
 		playerActions.onThrowBombHandler += audioManager.handleOnThrowBombEvent;
+		return playerObject;
 	}
 
 	public void RestartGame() {

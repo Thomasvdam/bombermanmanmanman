@@ -9,7 +9,7 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 	public float waitTillExplode = 3;
 	public float fallingSpeed = 1;
 	public float fallingDuration = 2;
-    public float projectileScaleFactor = 3;
+    public float projectileScaleFactor = 0.5f;
 
 	private bool isFalling = false;
 	private bool isThrown = false;

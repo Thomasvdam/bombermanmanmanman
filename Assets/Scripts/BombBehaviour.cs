@@ -10,6 +10,7 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 	public float fallingSpeed = 1;
 	public float fallingDuration = 2;
     public float projectileScaleFactor = 0.5f;
+    public float rotationSpeed = 3.0f;
 
 	private bool isFalling = false;
 	private bool isThrown = false;
@@ -39,10 +40,11 @@ public class BombBehaviour : MonoBehaviour, IFallable {
     void FixedUpdate () {
         if (!isFalling && isThrown){
             ScaleProjectile();
+            RotateProjectile();
         }
     }
 
-	IEnumerator Explode (float waitTillExplode){
+	IEnumerator Explode (float waitTillExplode) {
 		yield return new WaitForSeconds (waitTillExplode);
 		//Instantiate shockwave when time is over
 		if (gameObject) {
@@ -55,6 +57,10 @@ public class BombBehaviour : MonoBehaviour, IFallable {
         ratioThrownTime = (Time.time - thrownTime) / travelTime;
         scale = -(Mathf.Pow(ratioThrownTime * 2.0f, 2.0f)) + 2 * (ratioThrownTime * 2.0f);
         transform.localScale = new Vector3(initialScale.x + scale * projectileScaleFactor, initialScale.y + scale * projectileScaleFactor, initialScale.z + scale * projectileScaleFactor);
+    }
+
+    private void RotateProjectile () {
+        rBody.MoveRotation(rBody.rotation + rotationSpeed + Time.fixedDeltaTime);
     }
 
     public void Armed () {

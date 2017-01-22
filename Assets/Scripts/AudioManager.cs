@@ -34,7 +34,7 @@ public class AudioManager : MonoBehaviour {
 	}*/
 	
 	public void handleOnSecondSoundEvent(object sender, System.EventArgs args) {
-		audio.PlayOneShot(secondSound, 0.2F);
+		audio.PlayOneShot(secondSound, 1F);
 	}
 	
 	public void handleOnTimerEndedSound(object sender, System.EventArgs args) {

@@ -28,8 +28,17 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 
 	private Rigidbody2D rBody;
 
+	public event System.EventHandler onBombExplodeHandler; //handles that we want to play the sound for throwing a bomb
+	public void onBombExplode() {
+		System.EventHandler handler = onBombExplodeHandler;
+		if (handler != null) {
+			handler(this, System.EventArgs.Empty);
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
+		GameManager.getInstance().RegisterBomb(this);
 		// Begin Timer for explosion
 		StartCoroutine(Explode(waitTillExplode));
 		rBody = GetComponent<Rigidbody2D> ();
@@ -51,9 +60,11 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 
 	IEnumerator Explode (float waitTillExplode) {
 		yield return new WaitForSeconds (waitTillExplode);
+
 		//Instantiate shockwave when time is over
 		if (gameObject != null && !isFalling) {
 			Instantiate (shockwave, transform.position, Quaternion.identity);
+			onBombExplode ();
 			Destroy (this.gameObject);
 			if (onBombDespawns != null) {
 				onBombDespawns ();

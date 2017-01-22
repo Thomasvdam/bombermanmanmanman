@@ -18,6 +18,8 @@ public class Player : MonoBehaviour, IFallable {
 	private Color prevColor;
 	public Color flashColor = new Color (1, 1, 1, 0.5f);
 
+	public GameObject splashPrefab;
+
 	public GameObject footstepPrefab;
 	private bool isLeftFootstep;
 
@@ -28,7 +30,6 @@ public class Player : MonoBehaviour, IFallable {
 	public delegate void EventHandler(GameObject e, int id);
 	public event EventHandler onPlayerDeath;
 	public event System.EventHandler onFootStepHandler; //handles that we want to play the sound for a footstep
-	public event System.EventHandler onPlonsHandler; //handles that we want to play the sound for falling (plonsing)
 
 	private PlayerActions playerActions;
 	public Sprite[] character;
@@ -36,13 +37,6 @@ public class Player : MonoBehaviour, IFallable {
 
 	public void onFootStepEvent() {
 		System.EventHandler handler = onFootStepHandler;
-		if (handler != null) {
-			handler(this, System.EventArgs.Empty);
-		}
-	}
-
-	public void onPlonsEvent() {
-		System.EventHandler handler = onPlonsHandler;
 		if (handler != null) {
 			handler(this, System.EventArgs.Empty);
 		}
@@ -130,14 +124,16 @@ public class Player : MonoBehaviour, IFallable {
 	}
 
 	public void Fall () {
-		onPlonsEvent ();
+		Instantiate (splashPrefab, gameObject.transform.position, gameObject.transform.rotation);
 		isFalling = true;
-		rBody.velocity = Vector2.zero;
+		rBody.velocity /= 2f;
 		StartCoroutine(Kill(fallingDuration));
 		CancelInvoke();
 	}
 
 	IEnumerator Kill (float timer){
+		yield return new WaitForSeconds (0.1f);
+		myRenderer.sprite = null;
 		yield return new WaitForSeconds (timer);
 
 		Destroy (gameObject);

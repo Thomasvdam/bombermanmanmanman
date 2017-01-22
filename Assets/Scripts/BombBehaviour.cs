@@ -15,6 +15,8 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 	public delegate void EventHandler();
 	public event EventHandler onBombDespawns;
 
+	public GameObject splashPrefab;
+
 	private bool isFalling = false;
 	private bool isThrown = false;
     private float travelTime;
@@ -41,7 +43,7 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 	}
 
     void FixedUpdate () {
-        if (!isFalling && isThrown){
+        if (isThrown){
             ScaleProjectile();
             RotateProjectile();
         }
@@ -50,8 +52,15 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 	IEnumerator Explode (float waitTillExplode) {
 		yield return new WaitForSeconds (waitTillExplode);
 		//Instantiate shockwave when time is over
-		if (gameObject) {
+		if (gameObject != null && !isFalling) {
 			Instantiate (shockwave, transform.position, Quaternion.identity);
+			Destroy (this.gameObject);
+			if (onBombDespawns != null) {
+				onBombDespawns ();
+			}
+		} else if (gameObject != null) {
+			Instantiate (splashPrefab, gameObject.transform.position, Quaternion.identity);
+
 			Destroy (this.gameObject);
 			if (onBombDespawns != null) {
 				onBombDespawns ();
@@ -83,15 +92,5 @@ public class BombBehaviour : MonoBehaviour, IFallable {
 		isFalling = true;
 		rBody.velocity = rBody.velocity / 2;
 		rBody.drag = 1;
-
-		StartCoroutine(Kill(fallingDuration));
-	}
-
-	IEnumerator Kill (float timer){
-		yield return new WaitForSeconds (timer);
-		Destroy (this.gameObject);
-		if (onBombDespawns != null) {
-			onBombDespawns ();
-		}
 	}
 }

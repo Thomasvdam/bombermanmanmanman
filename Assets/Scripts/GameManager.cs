@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -14,9 +15,12 @@ public class GameManager : MonoBehaviour {
 	private PauseManager pauseManager;
 
 	public int numberOfPlayers = 4;
-	public int numberOfLives = 5;
+	private int deadPlayers = 0;
+	public int numberOfLives = 2;
 	private List<int> lives = new List<int>();
 	public List<UnityEngine.UI.Text> liveTexts;
+	private bool gameFinished = false;
+	public UnityEngine.UI.Text pauseText;
 
 	public GameObject playerPrefab1;
 	public GameObject playerPrefab2;
@@ -33,11 +37,38 @@ public class GameManager : MonoBehaviour {
 			lives [id - 1]--;
 			liveTexts [id - 1].text = lives [id - 1].ToString();
 			if (lives [id - 1] < 0) {
+				if (!gameFinished) {
+					deadPlayers++;
+					if (deadPlayers >= numberOfPlayers - 1) {
+						FinishGame ();
+					}
+				}
 				return;
 			}		
 		}
 
 		SpawnPlayer (id);
+	}
+
+	public void FinishGame() {
+		gameFinished = true;
+		pauseManager.OnPause ();
+
+		int winnerId = 0;
+		for (int i = 0; i < lives.Count; i++) {
+			if (lives [i] > 0) {
+				winnerId = i + 1;
+			}
+		}
+
+		String text = "Er is iets fout gegaan dus krijg je dit bericht";
+		if (winnerId > 0) {
+			text = "Winner: Player " + winnerId;
+		} else {
+			text = "No Winner";
+		}
+			
+		pauseText.text = text;
 	}
 
 	public static GameManager getInstance() {
@@ -60,6 +91,7 @@ public class GameManager : MonoBehaviour {
 	IEnumerator Finish (float waitUntilFinish){
 		yield return new WaitForSeconds (waitUntilFinish);
 		pauseManager.OnPause ();
+		
 	}
 
 	void StartGame() {
@@ -107,6 +139,10 @@ public class GameManager : MonoBehaviour {
 		PlayerActions playerActions = playerObject.GetComponent<PlayerActions> ();
 		playerActions.onArmBombHandler += audioManager.handleOnArmBombEvent;
 		playerActions.onThrowBombHandler += audioManager.handleOnThrowBombEvent;
+	}
+
+	public void RestartGame() {
+		SceneManager.LoadScene ("GameScene");
 	}
 
 }

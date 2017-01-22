@@ -38,6 +38,7 @@ public class StartAreaScript : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D co) {
+		Debug.Log("trigger enter");
 		if (co.tag.Equals (Constants.TAG_PLAYER)) {
 			mPlayersInArea++;
 			checkStartOrAbortTimer ();
@@ -45,6 +46,7 @@ public class StartAreaScript : MonoBehaviour {
 	}
 
 	void OnTriggerExit2D(Collider2D co) {
+		Debug.Log("trigger exit");
 		if (co.tag.Equals (Constants.TAG_PLAYER)) {
 			mPlayersInArea--;
 			checkStartOrAbortTimer ();

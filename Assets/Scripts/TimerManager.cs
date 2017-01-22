@@ -57,8 +57,8 @@ public class TimerManager : MonoBehaviour {
 			checkForSecondSound();
 			timerText.gameObject.SetActive(true);
 			time -= Time.deltaTime;
-			timerText.text = (int)time + "s";
 			checkTimePassed ();
+			timerText.text = (int)time + "s";
 		}
 	}
 
@@ -74,9 +74,9 @@ public class TimerManager : MonoBehaviour {
 	private void checkTimePassed() {
 		if (time < 1) {
 			reset();
-			timerText.gameObject.SetActive(false);
 			onTimerEndedSoundEvent();
 			mArgs.onTimerEndedEvent ();
+			timerText.gameObject.SetActive(false);
 		}
 	}
 

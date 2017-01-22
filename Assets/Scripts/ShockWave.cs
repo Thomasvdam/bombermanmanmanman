@@ -46,7 +46,7 @@ public class ShockWave : MonoBehaviour {
 			//get player rigidbody and add force inverse to the distance from the center
 			other.GetComponent<Rigidbody2D>().AddForce (blastPowerFactor * dir * blastPower);
 
-			otherPlayer.Vibrate (blastPower / 2f, blastPower / 2f, blastPower / 4f);
+			otherPlayer.Vibrate (blastPower / 2f, blastPower / 2f, blastPower / 6f);
 		}
 	}
 

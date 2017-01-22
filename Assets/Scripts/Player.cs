@@ -31,6 +31,8 @@ public class Player : MonoBehaviour, IFallable {
 	public event System.EventHandler onPlonsHandler; //handles that we want to play the sound for falling (plonsing)
 
 	private PlayerActions playerActions;
+	public Sprite[] character;
+	private SpriteRenderer spriteRender;
 
 	public void onFootStepEvent() {
 		System.EventHandler handler = onFootStepHandler;
@@ -56,6 +58,8 @@ public class Player : MonoBehaviour, IFallable {
 		myRenderer = GetComponent<SpriteRenderer> ();
 		prevColor = myRenderer.color;
 
+		spriteRender = GetComponent<SpriteRenderer> ();
+
 		myRenderer.color = flashColor;
 		StartCoroutine(EndGracePeriod(gracePeriodDuration));
 	}
@@ -80,6 +84,11 @@ public class Player : MonoBehaviour, IFallable {
 
 		//rBody.AddForce (direction * speed);
 		rBody.velocity += direction * speed / 10;
+
+		float angle = 180 - Mathf.Atan2 (direction.y, direction.x) * 180 / Mathf.PI;
+		int spriteNumber = (int) Mathf.Round(angle / 45) - 1;
+		spriteRender.sprite = character [spriteNumber];
+
 	}
 
 	public void Aim(float horizontal, float vertical) {

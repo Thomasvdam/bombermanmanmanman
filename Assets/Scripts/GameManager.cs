@@ -84,13 +84,15 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager getInstance() {
 		if (mManager == null) {
-			mManager = new GameManager();
+			Debug.Log("TROUBLE");
 		}
 		return mManager;
 	}
 
 	// Use this for initialization
 	void Start () {
+		mManager = this;
+
 		pauseManager = this.GetComponent<PauseManager>();
 		audioManager = GetComponent<AudioManager> ();
 		foreach (UnityEngine.UI.Text textfield in liveTexts) {
@@ -163,7 +165,7 @@ public class GameManager : MonoBehaviour {
 		Player player = playerObject.GetComponent<Player> ();
 		player.onPlayerDeath += this.onPlayerDeathEvent;
 		player.onFootStepHandler += audioManager.handleOnFootStepEvent;
-		player.onPlonsHandler += audioManager.handleOnPlonsEvent;
+//		player.onPlonsHandler += audioManager.handleOnPlonsEvent;
 		PlayerActions playerActions = playerObject.GetComponent<PlayerActions> ();
 		playerActions.onArmBombHandler += audioManager.handleOnArmBombEvent;
 		playerActions.onThrowBombHandler += audioManager.handleOnThrowBombEvent;
@@ -172,6 +174,10 @@ public class GameManager : MonoBehaviour {
 
 	public void RestartGame() {
 		SceneManager.LoadScene ("GameScene");
+	}
+
+	public void RegisterSplash(Splash obj) {
+		obj.onPlonsHandler += audioManager.handleOnPlonsEvent;
 	}
 
 }

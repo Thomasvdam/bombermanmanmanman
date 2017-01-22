@@ -39,6 +39,9 @@ public class GameManager : MonoBehaviour {
 	private GameObject player3;
 	private GameObject player4;
 
+	public Sprite[] winnerSprites;
+	public UnityEngine.UI.Image winnerImage;
+
 	public void onPlayerDeathEvent(object sender, int id) {
 		if (Constants.isStartedGame) {
 			lives [id - 1]--;
@@ -76,6 +79,7 @@ public class GameManager : MonoBehaviour {
 		}
 			
 		pauseText.text = text;
+		winnerImage.sprite = winnerSprites [winnerId];
 	}
 
 	public static GameManager getInstance() {
@@ -98,7 +102,6 @@ public class GameManager : MonoBehaviour {
 	IEnumerator Finish (float waitUntilFinish){
 		yield return new WaitForSeconds (waitUntilFinish);
 		pauseManager.OnPause ();
-		
 	}
 
 	void StartGame() {

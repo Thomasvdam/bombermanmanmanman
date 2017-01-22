@@ -11,8 +11,8 @@ public class AudioManager : MonoBehaviour {
 	public AudioClip armBombSound;
 	public AudioClip throwBombSound;
 
-
 	public AudioClip[] footStepSounds;
+	public AudioClip[] explodeSounds;
 
 	AudioSource audio;
 	
@@ -55,5 +55,9 @@ public class AudioManager : MonoBehaviour {
 
 	public void handleOnThrowBombEvent(object sender, System.EventArgs args) {
 		audio.PlayOneShot(throwBombSound, 0.5F);
+	}
+
+	public void handleOnExplodeBombEvent(object sender, System.EventArgs args) {
+		audio.PlayOneShot(explodeSounds[Random.Range(0, footStepSounds.Length)], 0.1F);
 	}
 }

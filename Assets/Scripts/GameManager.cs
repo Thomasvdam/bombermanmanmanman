@@ -34,11 +34,6 @@ public class GameManager : MonoBehaviour {
 	public GameObject spawnLocation3;
 	public GameObject spawnLocation4;
 
-	private GameObject player1;
-	private GameObject player2;
-	private GameObject player3;
-	private GameObject player4;
-
 	public Sprite[] winnerSprites;
 	public UnityEngine.UI.Image winnerImage;
 
@@ -127,35 +122,35 @@ public class GameManager : MonoBehaviour {
 		case 1:
 			prefab = playerPrefab1;
 			location = spawnLocation1;
-			player1 = instantiatePlayer (prefab, location);
+			instantiatePlayer (prefab, location);
 			GameObject.Find ("Lives1").GetComponent<UnityEngine.UI.RawImage> ().enabled = true;
 			GameObject.Find ("TextLives1").GetComponent<UnityEngine.UI.Text> ().enabled = true;
 			break;
 		case 2:
 			prefab = playerPrefab2;
 			location = spawnLocation2;
-			player2 = instantiatePlayer (prefab, location);
+			instantiatePlayer (prefab, location);
 			GameObject.Find ("Lives2").GetComponent<UnityEngine.UI.RawImage> ().enabled = true;
 			GameObject.Find ("TextLives2").GetComponent<UnityEngine.UI.Text> ().enabled = true;
 			break;
 		case 3:
 			prefab = playerPrefab3;
 			location = spawnLocation3;
-			player3 = instantiatePlayer (prefab, location);
+			instantiatePlayer (prefab, location);
 			GameObject.Find ("Lives3").GetComponent<UnityEngine.UI.RawImage> ().enabled = true;
 			GameObject.Find ("TextLives3").GetComponent<UnityEngine.UI.Text> ().enabled = true;
 			break;
 		case 4:
 			prefab = playerPrefab4;
 			location = spawnLocation4;
-			player4 = instantiatePlayer (prefab, location);
+			instantiatePlayer (prefab, location);
 			GameObject.Find ("Lives4").GetComponent<UnityEngine.UI.RawImage> ().enabled = true;
 			GameObject.Find ("TextLives4").GetComponent<UnityEngine.UI.Text> ().enabled = true;
 			break;
 		default:
 			prefab = playerPrefab1;
 			location = spawnLocation1;
-			player1 = instantiatePlayer (prefab, location);
+			instantiatePlayer (prefab, location);
 			GameObject.Find ("Lives1").GetComponent<UnityEngine.UI.RawImage> ().enabled = true;
 			GameObject.Find ("TextLives1").GetComponent<UnityEngine.UI.Text> ().enabled = true;
 			break;
@@ -176,7 +171,9 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void RestartGame() {
+		Constants.isSceneLoaded = false;
 		SceneManager.LoadScene ("GameScene");
+		Constants.isSceneLoaded = true;
 	}
 
 	public void RegisterSplash(Splash obj) {

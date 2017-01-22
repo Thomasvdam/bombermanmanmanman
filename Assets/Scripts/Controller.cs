@@ -20,6 +20,10 @@ public class Controller : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if (!Constants.isSceneLoaded) {
+			return;
+		}
+
 		checkAxes ();
 		checkFireButton ();
 		checkAbilityButton ();

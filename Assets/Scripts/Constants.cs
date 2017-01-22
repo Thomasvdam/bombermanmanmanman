@@ -8,6 +8,8 @@ public class Constants : MonoBehaviour {
 	public const string NAME_GAME_MANAGER = "GameManager";
 	public const string NAME_START_AREA = "StartArea";
 
-	public static bool isStartedGame;       
+	public static bool isStartedGame;
+
+	public static bool isSceneLoaded = true;
 
 }

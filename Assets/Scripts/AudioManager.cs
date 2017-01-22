@@ -58,6 +58,6 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	public void handleOnExplodeBombEvent(object sender, System.EventArgs args) {
-		audio.PlayOneShot(explodeSounds[Random.Range(0, footStepSounds.Length)], 0.1F);
+		audio.PlayOneShot(explodeSounds[Random.Range(0, explodeSounds.Length)], 1F);
 	}
 }

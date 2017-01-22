@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
 
 	private PauseManager pauseManager;
 
-	public int numberOfPlayers = 4;
+	private int numberOfPlayers = 4;
 	private int deadPlayers = 0;
 	public int numberOfLives = 2;
 	private List<int> lives = new List<int>();
@@ -62,11 +62,12 @@ public class GameManager : MonoBehaviour {
 
 	public void FinishGame() {
 		gameFinished = true;
+		Constants.isStartedGame = false;
 		pauseManager.OnPause ();
 
 		int winnerId = 0;
 		for (int i = 0; i < lives.Count; i++) {
-			if (lives [i] > 0) {
+			if (lives [i] >= 0) {
 				winnerId = i + 1;
 			}
 		}
@@ -79,7 +80,7 @@ public class GameManager : MonoBehaviour {
 		}
 			
 		pauseText.text = text;
-		winnerImage.sprite = winnerSprites [winnerId];
+		winnerImage.sprite = winnerSprites [winnerId - 1];
 	}
 
 	public static GameManager getInstance() {
@@ -114,6 +115,8 @@ public class GameManager : MonoBehaviour {
 			SpawnPlayer (i + 1);
 			lives.Add (numberOfLives);
 		}
+
+		numberOfPlayers = XCI.GetNumPluggedCtrlrs ();
 	}
 
 	void SpawnPlayer(int id) {
@@ -178,6 +181,10 @@ public class GameManager : MonoBehaviour {
 
 	public void RegisterSplash(Splash obj) {
 		obj.onPlonsHandler += audioManager.handleOnPlonsEvent;
+	}
+
+	public void RegisterBomb(BombBehaviour bomb) {
+		bomb.onBombExplodeHandler += audioManager.handleOnExplodeBombEvent;
 	}
 
 }
